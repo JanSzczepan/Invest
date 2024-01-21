@@ -6,8 +6,7 @@ public class Investor
     public string Name { get; set; }
     public string Surname { get; set; }
 
-    public ApplicationUser User { get; set; }
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
 
     public ICollection<Investment> Investments { get; set; } = new List<Investment>();
 }
