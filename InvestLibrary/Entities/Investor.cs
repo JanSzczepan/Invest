@@ -1,10 +1,12 @@
 ﻿namespace InvestLibrary.Entities;
 
-public class Instrument
+public class Investor
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string Name { get; set; }
-    public string Ticker { get; set; }
+    public string Surname { get; set; }
+
+    public string UserId { get; set; }
 
     public ICollection<Investment> Investments { get; set; } = new List<Investment>();
 }

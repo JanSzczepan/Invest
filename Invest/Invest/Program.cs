@@ -1,7 +1,7 @@
-using Invest.Client.Pages;
 using Invest.Components;
 using Invest.Components.Account;
 using Invest.Data;
+using InvestLibrary.Entities;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,29 +9,48 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorComponents()
+builder
+    .Services
+    .AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddInteractiveWebAssemblyComponents();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityUserAccessor>();
 builder.Services.AddScoped<IdentityRedirectManager>();
-builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder
+    .Services
+    .AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 
-builder.Services.AddAuthentication(options =>
+builder
+    .Services
+    .AddAuthentication(options =>
     {
         options.DefaultScheme = IdentityConstants.ApplicationScheme;
         options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+var authConnectionString =
+    builder.Configuration.GetConnectionString("AuthenticationConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string 'AuthenticationConnection' not found."
+    );
+var businessConnectionString =
+    builder.Configuration.GetConnectionString("BusinessConnection")
+    ?? throw new InvalidOperationException("Connection string 'BusinessConnection' not found.");
+builder
+    .Services
+    .AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(authConnectionString));
+builder
+    .Services
+    .AddDbContext<BusinessDbContext>(options => options.UseSqlServer(businessConnectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+builder
+    .Services
+    .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<AuthenticationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
