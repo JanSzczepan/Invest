@@ -1,4 +1,3 @@
-using Invest.Client.Pages;
 using Invest.Components;
 using Invest.Components.Account;
 using Invest.Data;
@@ -32,18 +31,26 @@ builder
     })
     .AddIdentityCookies();
 
-var connectionString =
-    builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var authConnectionString =
+    builder.Configuration.GetConnectionString("AuthenticationConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string 'AuthenticationConnection' not found."
+    );
+var businessConnectionString =
+    builder.Configuration.GetConnectionString("BusinessConnection")
+    ?? throw new InvalidOperationException("Connection string 'BusinessConnection' not found.");
 builder
     .Services
-    .AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+    .AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(authConnectionString));
+builder
+    .Services
+    .AddDbContext<BusinessDbContext>(options => options.UseSqlServer(businessConnectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder
     .Services
     .AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddEntityFrameworkStores<AuthenticationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
 
