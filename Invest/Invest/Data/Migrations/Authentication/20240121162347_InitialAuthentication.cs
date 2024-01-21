@@ -1,12 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Invest.Migrations
+namespace Invest.Data.Migrations.Authentication
 {
     /// <inheritdoc />
-    public partial class CreateIdentitySchema : Migration
+    public partial class InitialAuthentication : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

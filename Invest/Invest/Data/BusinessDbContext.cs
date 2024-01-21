@@ -18,10 +18,7 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
 
             entity.Property(investor => investor.Surname).IsRequired().HasMaxLength(50);
 
-            entity
-                .HasOne(investor => investor.User)
-                .WithOne()
-                .HasForeignKey<Investor>(investor => investor.UserId);
+            entity.Property(investor => investor.UserId).IsRequired();
 
             entity
                 .HasMany(investor => investor.Investments)
