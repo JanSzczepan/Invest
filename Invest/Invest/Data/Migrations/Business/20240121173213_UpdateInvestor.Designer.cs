@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invest.Data.Migrations.Business
 {
     [DbContext(typeof(BusinessDbContext))]
-    [Migration("20240121162455_InitialBusiness")]
-    partial class InitialBusiness
+    [Migration("20240121173213_UpdateInvestor")]
+    partial class UpdateInvestor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace Invest.Data.Migrations.Business
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");

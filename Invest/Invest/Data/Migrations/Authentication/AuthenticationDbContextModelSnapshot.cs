@@ -96,7 +96,7 @@ namespace Invest.Data.Migrations.Authentication
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -209,13 +209,13 @@ namespace Invest.Data.Migrations.Authentication
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId", "LoginProvider", "Name");
+                    b.HasKey("UserId", "LoginProvider", "FirstName");
 
                     b.ToTable("AspNetUserTokens", (string)null);
                 });

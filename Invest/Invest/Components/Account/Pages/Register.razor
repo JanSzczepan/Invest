@@ -6,6 +6,7 @@
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
 @using InvestLibrary.Entities
+@using InvestLibrary.Services
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -14,6 +15,7 @@
 @inject ILogger<Register> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+@inject InvestorService InvestorService
 
 <PageTitle>Register</PageTitle>
 
@@ -27,6 +29,16 @@
             <h2>Create a new account.</h2>
             <hr />
             <ValidationSummary class="text-danger" role="alert" />
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.FirstName" class="form-control" placeholder="First FirstName" />
+                <label for="first-name">First FirstName</label>
+                <ValidationMessage For="() => Input.FirstName" class="text-danger" />
+            </div>
+            <div class="form-floating mb-3">
+                <InputText @bind-Value="Input.LastName" class="form-control" placeholder="Last FirstName" />
+                <label for="last-name">Last FirstName</label>
+                <ValidationMessage For="() => Input.LastName" class="text-danger" />
+            </div>
             <div class="form-floating mb-3">
                 <InputText @bind-Value="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label for="email">Email</label>
@@ -79,6 +91,8 @@
             identityErrors = result.Errors;
             return;
         }
+
+        await InvestorService.AddInvestorAsync(user.Id, Input.FirstName, Input.LastName);
 
         Logger.LogInformation("User created a new account with password.");
 
@@ -141,5 +155,13 @@
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = "";
+
+        [Required(ErrorMessage = "First name is required")]
+        [Display(Name = "First name")]
+        public string FirstName { get; set; } = "";
+
+        [Required(ErrorMessage = "Last name is required")]
+        [Display(Name = "Last name")]
+        public string LastName { get; set; } = "";
     }
 }

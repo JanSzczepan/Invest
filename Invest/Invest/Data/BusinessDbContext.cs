@@ -14,9 +14,9 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
     {
         modelBuilder.Entity<Investor>(entity =>
         {
-            entity.Property(investor => investor.Name).IsRequired().HasMaxLength(50);
+            entity.Property(investor => investor.FirstName).IsRequired().HasMaxLength(50);
 
-            entity.Property(investor => investor.Surname).IsRequired().HasMaxLength(50);
+            entity.Property(investor => investor.LastName).IsRequired().HasMaxLength(50);
 
             entity.Property(investor => investor.UserId).IsRequired();
 

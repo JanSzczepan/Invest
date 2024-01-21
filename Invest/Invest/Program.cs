@@ -2,6 +2,7 @@ using Invest.Components;
 using Invest.Components.Account;
 using Invest.Data;
 using InvestLibrary.Entities;
+using InvestLibrary.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder
     .Services
     .AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<InvestorService>();
 
 builder
     .Services
