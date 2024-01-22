@@ -1,11 +1,11 @@
 using Invest.Components;
 using Invest.Components.Account;
 using Invest.Domain.Entities;
+using Invest.Infrastructure;
 using Invest.Infrastructure.Data;
 using Invest.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,21 +33,7 @@ builder
     })
     .AddIdentityCookies();
 
-var authConnectionString =
-    builder.Configuration.GetConnectionString("AuthenticationConnection")
-    ?? throw new InvalidOperationException(
-        "Connection string 'AuthenticationConnection' not found."
-    );
-var businessConnectionString =
-    builder.Configuration.GetConnectionString("BusinessConnection")
-    ?? throw new InvalidOperationException("Connection string 'BusinessConnection' not found.");
-builder
-    .Services
-    .AddDbContext<AuthenticationDbContext>(options => options.UseSqlServer(authConnectionString));
-builder
-    .Services
-    .AddDbContext<BusinessDbContext>(options => options.UseSqlServer(businessConnectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 builder
     .Services
