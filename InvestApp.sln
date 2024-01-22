@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest", "Invest\Invest\Invest.csproj", "{6C3FAC16-F3EA-43EE-8752-053DCC36D49C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest", "Invest\Invest.csproj", "{6C3FAC16-F3EA-43EE-8752-053DCC36D49C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Client", "Invest\Invest.Client\Invest.Client.csproj", "{324C26BA-CCF0-4605-BA92-55C164BCD9E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Client", "Invest.Client\Invest.Client.csproj", "{324C26BA-CCF0-4605-BA92-55C164BCD9E0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Domain", "InvestLibrary\Invest.Domain.csproj", "{19487A58-0201-415C-977B-B0398E613E1A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Domain", "Invest.Domain\Invest.Domain.csproj", "{19487A58-0201-415C-977B-B0398E613E1A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invest.Infrastructure", "Invest.Infrastructure\Invest.Infrastructure.csproj", "{1E76F192-041A-48AE-B525-A95AE7B05766}"
 EndProject
