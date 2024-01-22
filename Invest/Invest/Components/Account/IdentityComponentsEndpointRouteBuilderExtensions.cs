@@ -2,7 +2,7 @@ using System.Security.Claims;
 using System.Text.Json;
 using Invest.Components.Account.Pages;
 using Invest.Components.Account.Pages.Manage;
-using InvestLibrary.Entities;
+using Invest.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http.Extensions;

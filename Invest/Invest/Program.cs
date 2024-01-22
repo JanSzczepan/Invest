@@ -1,8 +1,8 @@
 using Invest.Components;
 using Invest.Components.Account;
-using Invest.Data;
-using InvestLibrary.Entities;
-using InvestLibrary.Services;
+using Invest.Domain.Entities;
+using Invest.Infrastructure.Data;
+using Invest.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

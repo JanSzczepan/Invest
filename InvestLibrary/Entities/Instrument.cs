@@ -1,4 +1,4 @@
-﻿namespace InvestLibrary.Entities;
+﻿namespace Invest.Domain.Entities;
 
 public class Instrument
 {

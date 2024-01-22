@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿#nullable disable
 
-#nullable disable
+using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Invest.Data.Migrations.Business
+namespace Invest.Infrastructure.Data.Migrations.Business
 {
     /// <inheritdoc />
     public partial class UpdateInvestor : Migration

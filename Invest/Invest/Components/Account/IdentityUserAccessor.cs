@@ -1,4 +1,4 @@
-using InvestLibrary.Entities;
+using Invest.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 
 namespace Invest.Components.Account

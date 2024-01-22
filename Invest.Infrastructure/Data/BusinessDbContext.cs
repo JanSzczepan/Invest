@@ -1,7 +1,7 @@
-﻿using InvestLibrary.Entities;
+﻿using Invest.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Invest.Data;
+namespace Invest.Infrastructure.Data;
 
 public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : DbContext(options)
 {
@@ -33,11 +33,11 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
             entity
                 .Property(investment => investment.Amount)
                 .IsRequired()
-                .HasColumnType("decimal(20,10)");
+                .HasColumnType<decimal>("decimal(20,10)");
             entity
                 .Property(investment => investment.PurchasePrice)
                 .IsRequired()
-                .HasColumnType("decimal(18,2)");
+                .HasColumnType<decimal>("decimal(18,2)");
 
             entity
                 .HasMany(investment => investment.SalesHistory)
@@ -75,9 +75,12 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
             entity
                 .Property(saleHistory => saleHistory.Amount)
                 .IsRequired()
-                .HasColumnType("decimal(20,10)");
+                .HasColumnType<decimal>("decimal(20,10)");
 
-            entity.Property(sh => sh.SalePrice).IsRequired().HasColumnType("decimal(18,2)");
+            entity
+                .Property(sh => sh.SalePrice)
+                .IsRequired()
+                .HasColumnType<decimal>("decimal(18,2)");
 
             entity
                 .HasOne(saleHistory => saleHistory.Investment)

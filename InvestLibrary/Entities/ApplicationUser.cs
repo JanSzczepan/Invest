@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace InvestLibrary.Entities;
+namespace Invest.Domain.Entities;
 
 public class ApplicationUser : IdentityUser { }

@@ -1,9 +1,8 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace Invest.Data.Migrations.Business
+namespace Invest.Infrastructure.Data.Migrations.Business
 {
     /// <inheritdoc />
     public partial class InitialBusiness : Migration

@@ -1,9 +1,8 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace Invest.Data.Migrations.Authentication
+namespace Invest.Infrastructure.Data.Migrations.Authentication
 {
     /// <inheritdoc />
     public partial class InitialAuthentication : Migration

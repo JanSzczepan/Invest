@@ -1,8 +1,8 @@
-﻿using Invest.Data;
-using InvestLibrary.Entities;
+﻿using Invest.Domain.Entities;
+using Invest.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace InvestLibrary.Services;
+namespace Invest.Services;
 
 public class InvestorService(BusinessDbContext context)
 {
