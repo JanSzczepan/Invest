@@ -1,5 +1,6 @@
 ﻿using Invest.Data;
 using InvestLibrary.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace InvestLibrary.Services;
 
@@ -19,5 +20,17 @@ public class InvestorService(BusinessDbContext context)
 
         await _context.Investors.AddAsync(investor);
         await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveInvestorAsync(string userId)
+    {
+        var investor = await _context
+            .Investors
+            .FirstOrDefaultAsync(investor => investor.UserId == userId);
+        if (investor != null)
+        {
+            _context.Investors.Remove(investor);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -23,7 +23,8 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
             entity
                 .HasMany(investor => investor.Investments)
                 .WithOne(investment => investment.Investor)
-                .HasForeignKey(investment => investment.InvestorId);
+                .HasForeignKey(investment => investment.InvestorId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Investment>(entity =>
