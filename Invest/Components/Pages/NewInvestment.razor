@@ -1,8 +1,12 @@
-﻿@rendermode InteractiveServer
-@page "/new-investment"
+﻿@page "/Investment/New"
+
 @using Invest.Services.DTOs
 @using System.ComponentModel.DataAnnotations
 @using Invest.Services
+@using Microsoft.AspNetCore.Authorization
+
+@rendermode InteractiveServer
+@attribute [Authorize]
 
 @inject InstrumentService InstrumentService
 
@@ -58,7 +62,7 @@
 
 
 @code {
-    [SupplyParameterFromForm] private InputModel Input { get; } = new();
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
 
     private IEnumerable<InstrumentDto>? instruments;
 
