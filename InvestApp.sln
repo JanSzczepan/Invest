@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Client", "Invest.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Domain", "Invest.Domain\Invest.Domain.csproj", "{19487A58-0201-415C-977B-B0398E613E1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Invest.Infrastructure", "Invest.Infrastructure\Invest.Infrastructure.csproj", "{1E76F192-041A-48AE-B525-A95AE7B05766}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Invest.Infrastructure", "Invest.Infrastructure\Invest.Infrastructure.csproj", "{1E76F192-041A-48AE-B525-A95AE7B05766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

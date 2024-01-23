@@ -1,6 +1,7 @@
 ﻿@page "/Account/Register"
 
 @using System.ComponentModel.DataAnnotations
+@using System.Security.Claims
 @using System.Text
 @using System.Text.Encodings.Web
 @using Microsoft.AspNetCore.Identity
@@ -92,7 +93,8 @@
             return;
         }
 
-        await InvestorService.AddInvestorAsync(user.Id, Input.FirstName, Input.LastName);
+        var investorId = await InvestorService.AddInvestorAsync(user.Id, Input.FirstName, Input.LastName);
+        await UserManager.AddClaimAsync(user, new Claim("InvestorId", investorId.ToString()));
 
         Logger.LogInformation("User created a new account with password.");
 
