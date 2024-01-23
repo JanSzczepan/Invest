@@ -9,6 +9,9 @@
 @attribute [Authorize]
 
 @inject InstrumentService InstrumentService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserService UserService
+@inject ILogger<NewInvestment> Logger
 
 <PageTitle>New Investment</PageTitle>
 
@@ -64,11 +67,18 @@
 @code {
     [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
 
+    private Guid? investorId;
     private IEnumerable<InstrumentDto>? instruments;
 
     protected override async Task OnInitializedAsync()
     {
+        await GetInvestorIdAsync();
         await GetInstrumentsAsync();
+    }
+
+    private async Task GetInvestorIdAsync()
+    {
+        investorId = await UserService.GetInvestorIdAsync();
     }
 
     private async Task GetInstrumentsAsync()
@@ -78,6 +88,7 @@
 
     private async Task HandleValidSubmit()
     {
+        
     }
 
     public sealed class InputModel

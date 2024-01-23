@@ -25,6 +25,7 @@ builder
     .Services
     .AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 builder.Services.AddScoped<InstrumentDataSeeder>();
+builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<InvestorService>();
 builder.Services.AddScoped<InstrumentService>();
 
