@@ -9,8 +9,8 @@
 @attribute [Authorize]
 
 @inject InstrumentService InstrumentService
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserService UserService
+@inject InvestmentService InvestmentService
 @inject ILogger<NewInvestment> Logger
 
 <PageTitle>New Investment</PageTitle>
@@ -24,6 +24,7 @@
     <div class="form-group">
         <label for="instrument">Financial instrument:</label>
         <select @bind="Input.InstrumentId" class="form-control" id="instrument">
+            <option value="">Select a financial instrument</option>
             @if (instruments is not null)
             {
                 @foreach (var instrument in instruments)
@@ -88,14 +89,26 @@
 
     private async Task HandleValidSubmit()
     {
-        
+        if (investorId.HasValue && Input.InstrumentId.HasValue)
+        {
+            var investmentDto = new InvestmentDto
+            {
+                InvestorId = investorId.Value,
+                InstrumentId = Input.InstrumentId.Value,
+                PurchaseDate = Input.PurchaseDate,
+                Amount = Input.Amount,
+                PurchasePrice = Input.PurchasePrice
+            };
+            
+            await InvestmentService.AddInvestmentAsync(investmentDto);
+        }
     }
 
     public sealed class InputModel
     {
         [Required]
         [Display(Name = "Financial instrument")]
-        public int InstrumentId { get; set; }
+        public int? InstrumentId { get; set; }
 
         [Required]
         [DataType(DataType.DateTime)]

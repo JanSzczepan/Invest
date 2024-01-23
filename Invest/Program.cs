@@ -28,6 +28,7 @@ builder.Services.AddScoped<InstrumentDataSeeder>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<InvestorService>();
 builder.Services.AddScoped<InstrumentService>();
+builder.Services.AddScoped<InvestmentService>();
 
 builder
     .Services
