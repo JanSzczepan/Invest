@@ -3,9 +3,11 @@ using Invest.Components.Account;
 using Invest.Domain.Entities;
 using Invest.Infrastructure;
 using Invest.Infrastructure.Data;
+using Invest.Infrastructure.Data.Seeds;
 using Invest.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using _Imports = Invest.Client._Imports;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +25,7 @@ builder
     .Services
     .AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
 builder.Services.AddScoped<InvestorService>();
+builder.Services.AddScoped<InstrumentDataSeeder>();
 
 builder
     .Services
@@ -54,7 +57,7 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Error", createScopeForErrors: true);
+    app.UseExceptionHandler("/Error", true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -67,9 +70,14 @@ app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode()
     .AddInteractiveWebAssemblyRenderMode()
-    .AddAdditionalAssemblies(typeof(Invest.Client._Imports).Assembly);
+    .AddAdditionalAssemblies(typeof(_Imports).Assembly);
 
 // Add additional endpoints required by the Identity /Account Razor components.
 app.MapAdditionalIdentityEndpoints();
+
+using var scope = app.Services.CreateScope();
+
+var seeder = scope.ServiceProvider.GetService<InstrumentDataSeeder>();
+if (seeder != null) await seeder.SeedAsync();
 
 app.Run();
