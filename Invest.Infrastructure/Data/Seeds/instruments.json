@@ -1,0 +1,82 @@
+[
+  {
+    "Name": "Apple Inc.",
+    "Ticker": "AAPL"
+  },
+  {
+    "Name": "Microsoft Corporation",
+    "Ticker": "MSFT"
+  },
+  {
+    "Name": "Amazon.com Inc.",
+    "Ticker": "AMZN"
+  },
+  {
+    "Name": "Tesla Inc.",
+    "Ticker": "TSLA"
+  },
+  {
+    "Name": "Alphabet Inc. (Google)",
+    "Ticker": "GOOGL"
+  },
+  {
+    "Name": "Facebook, Inc. (Meta Platforms)",
+    "Ticker": "FB"
+  },
+  {
+    "Name": "Berkshire Hathaway Inc.",
+    "Ticker": "BRK.A"
+  },
+  {
+    "Name": "Johnson & Johnson",
+    "Ticker": "JNJ"
+  },
+  {
+    "Name": "JPMorgan Chase & Co.",
+    "Ticker": "JPM"
+  },
+  {
+    "Name": "Visa Inc.",
+    "Ticker": "V"
+  },
+  {
+    "Name": "Procter & Gamble Co.",
+    "Ticker": "PG"
+  },
+  {
+    "Name": "UnitedHealth Group Incorporated",
+    "Ticker": "UNH"
+  },
+  {
+    "Name": "Intel Corporation",
+    "Ticker": "INTC"
+  },
+  {
+    "Name": "Verizon Communications Inc.",
+    "Ticker": "VZ"
+  },
+  {
+    "Name": "Coca-Cola Company",
+    "Ticker": "KO"
+  },
+  {
+    "Name": "Pfizer Inc.",
+    "Ticker": "PFE"
+  },
+  {
+    "Name": "Walmart Inc.",
+    "Ticker": "WMT"
+  },
+  {
+    "Name": "Mastercard Incorporated",
+    "Ticker": "MA"
+  },
+  {
+    "Name": "NVIDIA Corporation",
+    "Ticker": "NVDA"
+  },
+  {
+    "Name": "The Boeing Company",
+    "Ticker": "BA"
+  }
+]

@@ -17,8 +17,4 @@
 	  <ProjectReference Include="..\Invest.Domain\Invest.Domain.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="Data\Seeds\" />
-	</ItemGroup>
-
 </Project>
