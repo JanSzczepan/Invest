@@ -24,8 +24,9 @@ builder.Services.AddScoped<IdentityRedirectManager>();
 builder
     .Services
     .AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
-builder.Services.AddScoped<InvestorService>();
 builder.Services.AddScoped<InstrumentDataSeeder>();
+builder.Services.AddScoped<InvestorService>();
+builder.Services.AddScoped<InstrumentService>();
 
 builder
     .Services

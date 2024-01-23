@@ -1,0 +1,107 @@
+﻿@rendermode InteractiveServer
+@page "/new-investment"
+@using Invest.Services.DTOs
+@using System.ComponentModel.DataAnnotations
+@using Invest.Services
+
+@inject InstrumentService InstrumentService
+
+<PageTitle>New Investment</PageTitle>
+
+<h1>New Investment</h1>
+
+
+<EditForm class="d-flex flex-column gap-3" Model="@Input" FormName="newInvestmentForm" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator/>
+
+    <div class="form-group">
+        <label for="instrument">Financial instrument:</label>
+        <select @bind="Input.InstrumentId" class="form-control" id="instrument">
+            @if (instruments is not null)
+            {
+                @foreach (var instrument in instruments)
+                {
+                    <option value="@instrument.Id">@instrument.Name</option>
+                }
+            }
+        </select>
+        <ValidationMessage For="() => Input.InstrumentId" class="text-danger"/>
+    </div>
+
+    <div class="form-group">
+        <label for="purchaseDate">Date and time of purchase:</label>
+        <InputDate Type="InputDateType.DateTimeLocal" @bind-Value="Input.PurchaseDate" class="form-control" id="purchaseDate" />
+        <ValidationMessage For="() => Input.PurchaseDate" class="text-danger" />
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Amount:</label>
+        <InputNumber @bind-Value="Input.Amount" class="form-control" id="amount"/>
+        <ValidationMessage For="() => Input.Amount" class="text-danger"/>
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <div class="input-group">
+            <span class="input-group-text">$</span>
+            <InputNumber @bind-Value="Input.PurchasePrice" class="form-control" id="price" step="0.01" />
+        </div>
+        <ValidationMessage For="() => Input.PurchasePrice" class="text-danger" />
+    </div>
+
+    <ValidationSummary class="text-danger mb-0" role="alert" />
+
+    <div class="d-flex">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</EditForm>
+
+
+@code {
+    [SupplyParameterFromForm] private InputModel Input { get; } = new();
+
+    private IEnumerable<InstrumentDto>? instruments;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetInstrumentsAsync();
+    }
+
+    private async Task GetInstrumentsAsync()
+    {
+        instruments = await InstrumentService.GetAllInstrumentsAsync();
+    }
+
+    private async Task HandleValidSubmit()
+    {
+    }
+
+    public sealed class InputModel
+    {
+        [Required]
+        [Display(Name = "Financial instrument")]
+        public int InstrumentId { get; set; }
+
+        [Required]
+        [DataType(DataType.DateTime)]
+        [CustomValidation(typeof(InputModel), nameof(ValidateDate))]
+        [Display(Name = "Date and time of purchase")]
+        public DateTime PurchaseDate { get; set; } = DateTime.Now;
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
+        [Display(Name = "Amount")]
+        public decimal Amount { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
+        [Display(Name = "Price")]
+        public decimal PurchasePrice { get; set; }
+
+        public static ValidationResult? ValidateDate(DateTime date, ValidationContext context)
+        {
+            return date > DateTime.Now ? new ValidationResult("Date of purchase cannot be in the future.") : ValidationResult.Success;
+        }
+    }
+
+}
