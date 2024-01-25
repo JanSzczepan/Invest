@@ -30,18 +30,21 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
         modelBuilder.Entity<Investment>(entity =>
         {
             entity.Property(investment => investment.PurchaseDate).IsRequired();
+
             entity
                 .Property(investment => investment.InitialAmount)
                 .IsRequired()
-                .HasColumnType<decimal>("decimal(20,10)");
+                .HasColumnType("decimal(20,10)");
+
             entity
                 .Property(investment => investment.Amount)
                 .IsRequired()
-                .HasColumnType<decimal>("decimal(20,10)");
+                .HasColumnType("decimal(20,10)");
+
             entity
                 .Property(investment => investment.PurchasePrice)
                 .IsRequired()
-                .HasColumnType<decimal>("decimal(18,2)");
+                .HasColumnType("decimal(18,2)");
 
             entity
                 .HasMany(investment => investment.SalesHistory)
@@ -79,12 +82,19 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
             entity
                 .Property(saleHistory => saleHistory.Amount)
                 .IsRequired()
-                .HasColumnType<decimal>("decimal(20,10)");
+                .HasColumnType("decimal(20,10)");
+
+            entity.Property(sh => sh.SalePrice).IsRequired().HasColumnType("decimal(18,2)");
 
             entity
-                .Property(sh => sh.SalePrice)
+                .Property(saleHistory => saleHistory.ProfitInUSD)
                 .IsRequired()
-                .HasColumnType<decimal>("decimal(18,2)");
+                .HasColumnType("decimal(18, 2)");
+
+            entity
+                .Property(saleHistory => saleHistory.ProfitPercentage)
+                .IsRequired()
+                .HasColumnType("decimal(18, 4)");
 
             entity
                 .HasOne(saleHistory => saleHistory.Investment)

@@ -6,6 +6,8 @@ public class SaleHistory
     public DateTime SaleDate { get; set; }
     public decimal Amount { get; set; }
     public decimal SalePrice { get; set; }
+    public decimal ProfitInUSD { get; set; }
+    public decimal ProfitPercentage { get; set; }
 
     public Investment Investment { get; set; }
     public Guid InvestmentId { get; set; }
