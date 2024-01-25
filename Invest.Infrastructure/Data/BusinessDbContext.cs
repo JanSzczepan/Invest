@@ -18,6 +18,16 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
 
             entity.Property(investor => investor.LastName).IsRequired().HasMaxLength(50);
 
+            entity
+                .Property(investor => investor.TotalProfitInUSD)
+                .IsRequired()
+                .HasColumnType("decimal(18, 2)");
+
+            entity
+                .Property(investor => investor.TotalProfitPercentage)
+                .IsRequired()
+                .HasColumnType("decimal(18, 4)");
+
             entity.Property(investor => investor.UserId).IsRequired();
 
             entity
