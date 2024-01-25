@@ -13,7 +13,8 @@ public class InvestmentService(BusinessDbContext context)
             InvestorId = investmentDto.InvestorId,
             InstrumentId = investmentDto.InstrumentId,
             PurchaseDate = investmentDto.PurchaseDate,
-            Amount = investmentDto.Amount,
+            InitialAmount = investmentDto.InitialAmount,
+            Amount = investmentDto.InitialAmount,
             PurchasePrice = investmentDto.PurchasePrice
         };
 

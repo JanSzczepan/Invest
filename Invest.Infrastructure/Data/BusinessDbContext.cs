@@ -31,6 +31,10 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
         {
             entity.Property(investment => investment.PurchaseDate).IsRequired();
             entity
+                .Property(investment => investment.InitialAmount)
+                .IsRequired()
+                .HasColumnType<decimal>("decimal(20,10)");
+            entity
                 .Property(investment => investment.Amount)
                 .IsRequired()
                 .HasColumnType<decimal>("decimal(20,10)");
