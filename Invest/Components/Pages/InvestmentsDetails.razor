@@ -1,0 +1,84 @@
+﻿@page "/Portfolio/Details/{InstrumentTicker}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Invest.Services
+@using Invest.Services.DTOs
+
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+@inject UserService UserService
+@inject InvestmentService InvestmentService
+
+<PageTitle>@InstrumentTicker investments</PageTitle>
+
+<h2>@InstrumentTicker investments</h2>
+
+@if (isLoading)
+{
+    <div class="text-center mt-3">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <ul class="list-group">
+        @foreach (var investment in investments)
+        {
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <div><strong>Instrument Name:</strong> @investment.InstrumentName</div>
+                    <div><strong>Instrument Ticker:</strong> @investment.InstrumentTicker</div>
+                    <div><strong>Initial Amount:</strong> @investment.InitialAmount.ToString("N4")</div>
+                    @if (investment.CurrentAmount > 0)
+                    {
+                        <div><strong>Current Amount:</strong> @investment.CurrentAmount.ToString("N4")</div>
+                    }
+                </div>
+                <div class="d-flex gap-1">
+                    <a class="btn btn-info" href="@($"/Investment/Details/{investment.InstrumentTicker}")">Details</a>
+                    @if (investment.CurrentAmount > 0)
+                    {
+                        <a class="btn btn-primary" href="@($"/Investment/Edit/{investment.InstrumentTicker}")">Modify</a>
+                    }
+                </div>
+            </li>
+        }
+    </ul>
+    @if (!investments.Any())
+    {
+        <p>No investments to display.</p>
+    }
+}
+
+@code {
+    [Parameter]
+    public string InstrumentTicker { get; set; }
+
+    private Guid? investorId;
+    private IEnumerable<InvestmentDetailsDto>? investments;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await GetInvestorIdAsync();
+        await GetInvestmentsAsync();
+        isLoading = false;
+    }
+
+    private async Task GetInvestorIdAsync()
+    {
+        investorId = await UserService.GetInvestorIdAsync();
+    }
+
+    private async Task GetInvestmentsAsync()
+    {
+        if (investorId.HasValue)
+        {
+            investments = await InvestmentService.GetInvestmentsByTickerAsync(investorId.Value, InstrumentTicker);
+        }
+    }
+}

@@ -90,4 +90,53 @@ public class InvestmentService(BusinessDbContext context)
 
         return result;
     }
+
+    public async Task<List<InvestmentDetailsDto>> GetInvestmentsByTickerAsync(
+        Guid investorId,
+        string ticker
+    )
+    {
+        var investments = await context
+            .Investments
+            .Include(investment => investment.Instrument)
+            .Include(investment => investment.SalesHistory)
+            .Where(
+                investment =>
+                    investment.InvestorId == investorId && investment.Instrument.Ticker == ticker
+            )
+            .ToListAsync();
+
+        // TODO: calculate profit
+
+        var notFullySoldInvestments = investments
+            .Where(
+                investment =>
+                    investment.SalesHistory.Sum(sh => sh.Amount) < investment.InitialAmount
+            )
+            .OrderBy(investment => investment.PurchaseDate);
+
+        var fullySoldInvestments = investments
+            .Where(
+                investment =>
+                    investment.SalesHistory.Sum(sh => sh.Amount) == investment.InitialAmount
+            )
+            .OrderBy(investment => investment.PurchaseDate);
+
+        var sortedInvestments = notFullySoldInvestments
+            .Concat(fullySoldInvestments)
+            .Select(
+                investment =>
+                    new InvestmentDetailsDto
+                    {
+                        InstrumentTicker = investment.Instrument.Ticker,
+                        InstrumentName = investment.Instrument.Name,
+                        InitialAmount = investment.InitialAmount,
+                        CurrentAmount =
+                            investment.InitialAmount - investment.SalesHistory.Sum(sh => sh.Amount)
+                    }
+            )
+            .ToList();
+
+        return sortedInvestments;
+    }
 }
