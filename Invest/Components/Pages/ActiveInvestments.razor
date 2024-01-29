@@ -1,0 +1,44 @@
+﻿@page "/Portfolio/ActiveInvestments"
+
+@using Microsoft.AspNetCore.Authorization
+@using Invest.Services
+@using Invest.Services.DTOs
+
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+@inject UserService UserService
+@inject InvestmentService InvestmentService
+
+<PageTitle>Active Investments</PageTitle>
+
+<h2>Active Investments</h2>
+
+<InvestmentList investments="@investments"></InvestmentList>
+
+@code {
+    private Guid? investorId;
+    private IEnumerable<InvestmentSummaryDto>? investments;
+    private bool isLoading = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        isLoading = true;
+        await GetInvestorIdAsync();
+        await GetInvestmentsAsync();
+        isLoading = false;
+    }
+
+    private async Task GetInvestorIdAsync()
+    {
+        investorId = await UserService.GetInvestorIdAsync();
+    }
+
+    private async Task GetInvestmentsAsync()
+    {
+        if (investorId.HasValue)
+        {
+            investments = await InvestmentService.GetActiveInvestmentsSummaryAsync(investorId.Value);
+        }
+    }
+}
