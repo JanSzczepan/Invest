@@ -4,6 +4,7 @@ public class Investment
 {
     public Guid Id { get; set; }
     public DateTime PurchaseDate { get; set; }
+    public decimal InitialAmount { get; set; }
     public decimal Amount { get; set; }
     public decimal PurchasePrice { get; set; }
 

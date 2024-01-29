@@ -8,6 +8,7 @@
 @using Microsoft.AspNetCore.WebUtilities
 @using Invest.Domain.Entities
 @using Invest.Services
+@using Invest.Services.DTOs
 
 @inject UserManager<ApplicationUser> UserManager
 @inject IUserStore<ApplicationUser> UserStore
@@ -93,7 +94,13 @@
             return;
         }
 
-        var investorId = await InvestorService.AddInvestorAsync(user.Id, Input.FirstName, Input.LastName);
+        var investorDto = new InvestorDto
+        {
+            FirstName = Input.FirstName,
+            LastName = Input.LastName,
+            UserId = user.Id
+        };
+        var investorId = await InvestorService.AddInvestorAsync(investorDto);
         await UserManager.AddClaimAsync(user, new Claim("InvestorId", investorId.ToString()));
 
         Logger.LogInformation("User created a new account with password.");

@@ -4,6 +4,7 @@ using Invest.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Invest.Infrastructure.Data.Migrations.Business
 {
     [DbContext(typeof(BusinessDbContext))]
-    partial class BusinessDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240125121500_SaleHistoryProfit")]
+    partial class SaleHistoryProfit
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,12 +96,6 @@ namespace Invest.Infrastructure.Data.Migrations.Business
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("TotalProfitInUSD")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("TotalProfitPercentage")
-                        .HasColumnType("decimal(18, 4)");
 
                     b.Property<string>("UserId")
                         .IsRequired()

@@ -1,19 +1,21 @@
 ﻿using Invest.Domain.Entities;
 using Invest.Infrastructure.Data;
+using Invest.Services.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace Invest.Services;
 
 public class InvestorService(BusinessDbContext context)
 {
-    public async Task<Guid> AddInvestorAsync(string userId, string firstName, string lastName)
+    public async Task<Guid> AddInvestorAsync(InvestorDto investorDto)
     {
         var investor = new Investor
         {
-            Id = Guid.NewGuid(),
-            FirstName = firstName,
-            LastName = lastName,
-            UserId = userId
+            FirstName = investorDto.FirstName,
+            LastName = investorDto.LastName,
+            TotalProfitInUSD = 0,
+            TotalProfitPercentage = 0,
+            UserId = investorDto.UserId
         };
 
         await context.Investors.AddAsync(investor);

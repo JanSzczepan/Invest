@@ -44,8 +44,8 @@
 
     <div class="form-group">
         <label for="amount">Amount:</label>
-        <InputNumber @bind-Value="Input.Amount" class="form-control" id="amount"/>
-        <ValidationMessage For="() => Input.Amount" class="text-danger"/>
+        <InputNumber @bind-Value="Input.InitialAmount" class="form-control" id="amount"/>
+        <ValidationMessage For="() => Input.InitialAmount" class="text-danger" />
     </div>
 
     <div class="form-group">
@@ -96,7 +96,7 @@
                 InvestorId = investorId.Value,
                 InstrumentId = Input.InstrumentId.Value,
                 PurchaseDate = Input.PurchaseDate,
-                Amount = Input.Amount,
+                InitialAmount = Input.InitialAmount,
                 PurchasePrice = Input.PurchasePrice
             };
             
@@ -119,7 +119,7 @@
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
         [Display(Name = "Amount")]
-        public decimal Amount { get; set; }
+        public decimal InitialAmount { get; set; }
 
         [Required]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than 0")]
