@@ -1,0 +1,29 @@
+﻿@using Invest.Services.DTOs
+
+@if (investments != null && investments.Any())
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var investment in investments)
+        {
+            <a href=@($"/Portfolio/Details/{investment.InstrumentTicker}")>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">@investment.InstrumentName (@investment.InstrumentTicker)</h5>
+                            <p class="card-text">Total amount: @investment.TotalAmount.ToString("N4")</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <p>No investments to display.</p>
+}
+
+@code {
+    [Parameter]
+    public IEnumerable<InvestmentSummaryDto> investments { get; set; }
+}

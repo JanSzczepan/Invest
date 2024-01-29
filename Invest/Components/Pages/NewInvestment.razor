@@ -11,11 +11,10 @@
 @inject InstrumentService InstrumentService
 @inject UserService UserService
 @inject InvestmentService InvestmentService
-@inject ILogger<NewInvestment> Logger
 
 <PageTitle>New Investment</PageTitle>
 
-<h1>New Investment</h1>
+<h2>New Investment</h2>
 
 
 <EditForm class="d-flex flex-column gap-3" Model="@Input" FormName="newInvestmentForm" OnValidSubmit="@HandleValidSubmit">

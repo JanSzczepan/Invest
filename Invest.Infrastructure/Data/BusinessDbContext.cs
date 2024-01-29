@@ -47,11 +47,6 @@ public class BusinessDbContext(DbContextOptions<BusinessDbContext> options) : Db
                 .HasColumnType("decimal(20,10)");
 
             entity
-                .Property(investment => investment.Amount)
-                .IsRequired()
-                .HasColumnType("decimal(20,10)");
-
-            entity
                 .Property(investment => investment.PurchasePrice)
                 .IsRequired()
                 .HasColumnType("decimal(18,2)");
