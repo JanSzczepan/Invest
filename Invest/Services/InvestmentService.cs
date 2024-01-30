@@ -188,4 +188,48 @@ public class InvestmentService(BusinessDbContext context)
         var totalSoldAmount = investment.SalesHistory.Sum(sh => sh.Amount);
         return investment.InitialAmount - totalSoldAmount;
     }
+
+    public async Task<InvestmentInfoDto> GetInvestmentInfoAsync(Guid investmentId)
+    {
+        var investment =
+            await context
+                .Investments
+                .Include(i => i.Instrument)
+                .Include(i => i.SalesHistory)
+                .FirstOrDefaultAsync(i => i.Id == investmentId)
+            ?? throw new InvalidOperationException("Investment not found.");
+
+        var salesHistoryDto = investment
+            .SalesHistory
+            .Select(
+                sh =>
+                    new SaleDto
+                    {
+                        SaleDate = sh.SaleDate,
+                        Amount = sh.Amount,
+                        SalePrice = sh.SalePrice,
+                        ProfitInUSD = sh.ProfitInUSD,
+                        ProfitPercentage = sh.ProfitPercentage
+                    }
+            )
+            .ToList();
+
+        var totalProfitInUsd = salesHistoryDto.Sum(sh => sh.ProfitInUSD);
+        var totalProfitPercentage = salesHistoryDto.Any()
+            ? salesHistoryDto.Average(sh => sh.ProfitPercentage)
+            : 0;
+
+        return new InvestmentInfoDto
+        {
+            PurchaseDate = investment.PurchaseDate,
+            InstrumentTicker = investment.Instrument.Ticker,
+            InstrumentName = investment.Instrument.Name,
+            InitialAmount = investment.InitialAmount,
+            CurrentAmount = investment.InitialAmount - investment.SalesHistory.Sum(sh => sh.Amount),
+            PurchasePrice = investment.PurchasePrice,
+            TotalProfitInUsd = totalProfitInUsd,
+            TotalProfitPercentage = totalProfitPercentage,
+            SalesHistory = salesHistoryDto
+        };
+    }
 }

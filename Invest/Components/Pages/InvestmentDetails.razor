@@ -1,0 +1,99 @@
+﻿@page "/Portfolio/Details/{InstrumentTicker}/{InvestmentId}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Invest.Services
+@using Invest.Services.DTOs
+@using System.Globalization
+@using Invest.Extensions
+
+@attribute [StreamRendering]
+@attribute [Authorize]
+
+@inject InvestmentService InvestmentService
+
+<PageTitle>@InstrumentTicker investment details</PageTitle>
+
+<h2>@InstrumentTicker investment details</h2>
+
+@if (investment != null)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            @investment.InstrumentName (@investment.InstrumentTicker)
+            @if (investment.CurrentAmount == investment.InitialAmount)
+            {
+                <span class="badge bg-success ms-2">Active</span>
+            }
+            else if (investment.CurrentAmount > 0)
+            {
+                <span class="badge bg-warning ms-2">Partially Sold</span>
+            }
+            else
+            {
+                <span class="badge bg-secondary ms-2">Sold</span>
+            }
+        </div>
+        <div class="card-body">
+            <p><strong>Purchase Date:</strong> @investment.PurchaseDate.ToCustomDateFormat()</p>
+            <p><strong>Purchase Price:</strong> @investment.PurchasePrice.ToCurrencyFormat()</p>
+            <p><strong>Initial Amount:</strong> @investment.InitialAmount.ToAmountFormat()</p>
+            <p><strong>Current Amount:</strong> @investment.CurrentAmount.ToAmountFormat()</p>
+            @if (investment.CurrentAmount != investment.InitialAmount)
+            {
+                <p><strong>Total Profit (USD):</strong> @investment.TotalProfitInUsd.ToCurrencyFormat()</p>
+                <p><strong>Total Profit (%):</strong> @investment.TotalProfitPercentage.ToPercentageFormat()</p>
+            }
+            @if (investment.CurrentAmount > 0)
+            {
+                <a href="/Portfolio/Edit/@investment.InstrumentTicker/@InvestmentId" class="btn btn-primary">Edit Investment</a>
+            }
+        </div>
+    </div>
+
+    @if (investment.SalesHistory.Any())
+    {
+        <h3>Sales History</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sale Date</th>
+                    <th>Amount</th>
+                    <th>Sale Price</th>
+                    <th>Profit (USD)</th>
+                    <th>Profit (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sale in investment.SalesHistory)
+                {
+                    <tr>
+                        <td>@sale.SaleDate.ToCustomDateFormat()</td>
+                        <td>@sale.Amount.ToAmountFormat()</td>
+                        <td>@sale.SalePrice.ToCurrencyFormat()</td>
+                        <td>@sale.ProfitInUSD.ToCurrencyFormat()</td>
+                        <td>@sale.ProfitPercentage.ToPercentageFormat()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+@code {
+    [Parameter]
+    public string InstrumentTicker { get; set; }
+    [Parameter]
+    public string InvestmentId { get; set; }
+
+    private InvestmentInfoDto? investment { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetInvestmentAsync();
+    }
+
+    private async Task GetInvestmentAsync()
+    {
+        investment = await InvestmentService.GetInvestmentInfoAsync(Guid.Parse(InvestmentId));
+    }
+}
