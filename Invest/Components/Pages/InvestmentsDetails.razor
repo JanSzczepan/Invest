@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Authorization
 @using Invest.Services
 @using Invest.Services.DTOs
+@using Invest.Extensions
 
 @attribute [StreamRendering]
 @attribute [Authorize]
@@ -31,12 +32,12 @@ else
                 <div>
                     <div><strong>Instrument Name:</strong> @investment.InstrumentName</div>
                     <div><strong>Instrument Ticker:</strong> @investment.InstrumentTicker</div>
-                    <div><strong>Initial Amount:</strong> @investment.InitialAmount.ToString("N4")</div>
+                    <div><strong>Initial Amount:</strong> @investment.InitialAmount.ToAmountFormat()</div>
                     @if (investment.CurrentAmount > 0)
                     {
-                        <div><strong>Current Amount:</strong> @investment.CurrentAmount.ToString("N4")</div>
+                        <div><strong>Current Amount:</strong> @investment.CurrentAmount.ToAmountFormat()</div>
                     }
-                    <div><strong>Purchase Date:</strong> @investment.PurchaseDate</div>
+                    <div><strong>Purchase Date:</strong> @investment.PurchaseDate.ToCustomDateFormat()</div>
                 </div>
                 <div class="d-flex gap-1">
                     <a class="btn btn-info" href=@($"/Portfolio/Details/{investment.InstrumentTicker}/{investment.Id}")>Details</a>

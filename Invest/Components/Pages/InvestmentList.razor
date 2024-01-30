@@ -1,4 +1,5 @@
 ﻿@using Invest.Services.DTOs
+@using Invest.Extensions
 
 @if (investments != null && investments.Any())
 {
@@ -10,7 +11,7 @@
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
                             <h5 class="card-title">@investment.InstrumentName (@investment.InstrumentTicker)</h5>
-                            <p class="card-text">Total amount: @investment.TotalAmount.ToString("N4")</p>
+                            <p class="card-text">Total amount: @investment.TotalAmount.ToAmountFormat()</p>
                         </div>
                     </div>
                 </div>
