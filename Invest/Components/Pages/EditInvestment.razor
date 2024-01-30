@@ -1,0 +1,109 @@
+﻿@page "/Portfolio/Edit/{InstrumentTicker}/{InvestmentId}"
+
+@using Microsoft.AspNetCore.Authorization
+@using Invest.Services
+
+@rendermode InteractiveServer
+@attribute [Authorize]
+@using Invest.Services.DTOs
+@using System.ComponentModel.DataAnnotations
+
+@inject InvestmentService InvestmentService
+
+<PageTitle>@InstrumentTicker investment</PageTitle>
+
+<h2>Edit @InstrumentTicker investment</h2>
+
+<EditForm class="d-flex flex-column gap-3" Model="@Input" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="form-group">
+        <label for="saleDate">Sale Date:</label>
+        <InputDate @bind-Value="Input.SaleDate" class="form-control" id="saleDate" />
+        <ValidationMessage For="() => Input.SaleDate" />
+    </div>
+
+    <div class="form-group">
+        <label for="amount">Amount:</label>
+        <InputNumber @bind-Value="Input.Amount" class="form-control" id="amount" />
+        <ValidationMessage For="() => Input.Amount" />
+    </div>
+
+    <div class="form-group">
+        <label for="salePrice">Sale Price:</label>
+        <InputNumber @bind-Value="Input.SalePrice" class="form-control" id="salePrice" step="10" />
+        <ValidationMessage For="() => Input.SalePrice" />
+    </div>
+    
+    <ValidationSummary class="text-danger mb-0" role="alert" />
+    
+    <div class="d-flex">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public string InstrumentTicker { get; set; }
+    [Parameter]
+    public string InvestmentId { get; set; }
+
+    private InputModel Input { get; set; } = new ();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await InitializeAvailableAmount();
+    }
+
+    private async Task InitializeAvailableAmount()
+    {
+        Input.AvailableAmount = await InvestmentService.GetAvailableAmountForSaleAsync(Guid.Parse(InvestmentId));
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        var saleDto = new InvestmentSaleDto
+        {
+            InvestmentId = Guid.Parse(InvestmentId),
+            SaleDate = Input.SaleDate,
+            Amount = Input.Amount,
+            SalePrice = Input.SalePrice
+        };
+
+        await InvestmentService.AddSaleAsync(saleDto);
+
+        Input = new InputModel();
+        await InitializeAvailableAmount();
+    }
+
+    public class InputModel
+    {
+        [Required]
+        [DataType(DataType.DateTime)]
+        [CustomValidation(typeof(InputModel), nameof(ValidateDate))]
+        [Display(Name = "Sale Date")]
+        public DateTime SaleDate { get; set; } = DateTime.Now;
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Amount must be greater than 0")]
+        [CustomValidation(typeof(InputModel), nameof(ValidateAmount))]
+        public decimal Amount { get; set; }
+
+        [Required]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Sale price must be greater than 0")]
+        public decimal SalePrice { get; set; }
+
+        public decimal AvailableAmount { get; set; }
+
+        public static ValidationResult? ValidateDate(DateTime date, ValidationContext context)
+        {
+            return date > DateTime.Now ? new ValidationResult("Sale date cannot be in the future.") : ValidationResult.Success;
+        }
+
+        public static ValidationResult? ValidateAmount(decimal amount, ValidationContext context)
+        {
+            var instance = (InputModel)context.ObjectInstance;
+            return amount > instance?.AvailableAmount ? new ValidationResult($"Amount cannot exceed the available investment amount of {instance.AvailableAmount.ToString($"N4")}.") : ValidationResult.Success;
+        }
+    }
+}

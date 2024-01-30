@@ -51,7 +51,7 @@
         <label for="price">Price:</label>
         <div class="input-group">
             <span class="input-group-text">$</span>
-            <InputNumber @bind-Value="Input.PurchasePrice" class="form-control" id="price" step="0.01" />
+            <InputNumber @bind-Value="Input.PurchasePrice" class="form-control" id="price" step="10" />
         </div>
         <ValidationMessage For="() => Input.PurchasePrice" class="text-danger" />
     </div>
@@ -65,7 +65,8 @@
 
 
 @code {
-    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
+    [SupplyParameterFromForm] 
+    private InputModel Input { get; set; } = new();
 
     private Guid? investorId;
     private IEnumerable<InstrumentDto>? instruments;
@@ -100,6 +101,8 @@
             };
             
             await InvestmentService.AddInvestmentAsync(investmentDto);
+
+            Input = new InputModel();
         }
     }
 

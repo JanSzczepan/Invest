@@ -39,10 +39,10 @@ else
                     <div><strong>Purchase Date:</strong> @investment.PurchaseDate</div>
                 </div>
                 <div class="d-flex gap-1">
-                    <a class="btn btn-info" href=@($"/Investment/Details/{investment.InstrumentTicker}/{investment.Id}")>Details</a>
+                    <a class="btn btn-info" href=@($"/Portfolio/Details/{investment.InstrumentTicker}/{investment.Id}")>Details</a>
                     @if (investment.CurrentAmount > 0)
                     {
-                        <a class="btn btn-primary" href=@($"/Investment/Edit/{investment.InstrumentTicker}/{investment.Id}")>Modify</a>
+                        <a class="btn btn-primary" href=@($"/Portfolio/Edit/{investment.InstrumentTicker}/{investment.Id}")>Edit</a>
                     }
                 </div>
             </li>

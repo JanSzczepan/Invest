@@ -141,4 +141,51 @@ public class InvestmentService(BusinessDbContext context)
 
         return sortedInvestments;
     }
+
+    public async Task AddSaleAsync(InvestmentSaleDto saleDto)
+    {
+        var investment =
+            await context
+                .Investments
+                .Include(i => i.SalesHistory)
+                .FirstOrDefaultAsync(i => i.Id == saleDto.InvestmentId)
+            ?? throw new InvalidOperationException("Investment not found.");
+
+        var totalSoldAmount = investment.SalesHistory.Sum(sh => sh.Amount);
+        if (totalSoldAmount + saleDto.Amount > investment.InitialAmount)
+        {
+            throw new InvalidOperationException(
+                "Sale amount exceeds the available investment amount."
+            );
+        }
+
+        var profitInUsd = (saleDto.SalePrice - investment.PurchasePrice) * saleDto.Amount;
+        var profitPercentage = (saleDto.SalePrice / investment.PurchasePrice - 1) * 100;
+
+        var saleHistory = new SaleHistory
+        {
+            InvestmentId = saleDto.InvestmentId,
+            SaleDate = saleDto.SaleDate,
+            Amount = saleDto.Amount,
+            SalePrice = saleDto.SalePrice,
+            ProfitInUSD = profitInUsd,
+            ProfitPercentage = profitPercentage
+        };
+
+        context.SaleHistories.Add(saleHistory);
+        await context.SaveChangesAsync();
+    }
+
+    public async Task<decimal> GetAvailableAmountForSaleAsync(Guid investmentId)
+    {
+        var investment =
+            await context
+                .Investments
+                .Include(i => i.SalesHistory)
+                .FirstOrDefaultAsync(i => i.Id == investmentId)
+            ?? throw new InvalidOperationException("Investment not found.");
+
+        var totalSoldAmount = investment.SalesHistory.Sum(sh => sh.Amount);
+        return investment.InitialAmount - totalSoldAmount;
+    }
 }
