@@ -7,6 +7,7 @@
 @attribute [Authorize]
 @using Invest.Services.DTOs
 @using System.ComponentModel.DataAnnotations
+@using Invest.Extensions
 
 @inject InvestmentService InvestmentService
 
@@ -103,7 +104,7 @@
         public static ValidationResult? ValidateAmount(decimal amount, ValidationContext context)
         {
             var instance = (InputModel)context.ObjectInstance;
-            return amount > instance?.AvailableAmount ? new ValidationResult($"Amount cannot exceed the available investment amount of {instance.AvailableAmount.ToString($"N4")}.") : ValidationResult.Success;
+            return amount > instance?.AvailableAmount ? new ValidationResult($"Amount cannot exceed the available investment amount of {instance.AvailableAmount.ToAmountFormat()}") : ValidationResult.Success;
         }
     }
 }
