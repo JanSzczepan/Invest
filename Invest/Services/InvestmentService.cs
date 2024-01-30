@@ -128,6 +128,8 @@ public class InvestmentService(BusinessDbContext context)
                 investment =>
                     new InvestmentDetailsDto
                     {
+                        Id = investment.Id,
+                        PurchaseDate = investment.PurchaseDate,
                         InstrumentTicker = investment.Instrument.Ticker,
                         InstrumentName = investment.Instrument.Name,
                         InitialAmount = investment.InitialAmount,
