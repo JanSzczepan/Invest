@@ -4,62 +4,63 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - webapp-invest-dev
 
 on:
-    push:
-        branches:
-            - develop
-    workflow_dispatch:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
 
-        steps:
-            - uses: actions/checkout@v4
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Set up .NET Core
-              uses: actions/setup-dotnet@v1
-              with:
-                  dotnet-version: "8.x"
-                  include-prerelease: true
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.x'
+          include-prerelease: true
 
-            - name: Build with dotnet
-              run: dotnet build --configuration Release
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
-            - name: dotnet publish
-              run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
-            - name: Upload artifact for deployment job
-              uses: actions/upload-artifact@v3
-              with:
-                  name: .net-app
-                  path: ${{env.DOTNET_ROOT}}/myapp
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v3
+        with:
+          name: .net-app
+          path: ${{env.DOTNET_ROOT}}/myapp
 
-    deploy:
-        runs-on: ubuntu-latest
-        needs: build
-        environment:
-            name: "Production"
-            url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-        permissions:
-            id-token: write #This is required for requesting the JWT
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
 
-        steps:
-            - name: Download artifact from build job
-              uses: actions/download-artifact@v3
-              with:
-                  name: .net-app
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+      
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_98117992EA23492F85B467A8186EF51D }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_03362079B0394035833161B75D283A7C }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_901C1FECB0334A849FF3986437536743 }}
 
-            - name: Login to Azure
-              uses: azure/login@v1
-              with:
-                  client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_28601601259541E5B953751F472C01FC }}
-                  tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_3B800DAC358347D2BEC073B4CF54E55E }}
-                  subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E0F0F0788CB24AD7BF21588D6002854C }}
-
-            - name: Deploy to Azure Web App
-              id: deploy-to-webapp
-              uses: azure/webapps-deploy@v2
-              with:
-                  app-name: "webapp-invest-dev"
-                  slot-name: "Production"
-                  package: .
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'webapp-invest-dev'
+          slot-name: 'Production'
+          package: .
+          
