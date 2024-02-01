@@ -51,7 +51,7 @@
         <label for="price">Price:</label>
         <div class="input-group">
             <span class="input-group-text">$</span>
-            <InputNumber @bind-Value="Input.PurchasePrice" class="form-control" id="price" step="10" />
+            <InputNumber @bind-Value="Input.PurchasePrice" class="form-control" id="price" />
         </div>
         <ValidationMessage For="() => Input.PurchasePrice" class="text-danger" />
     </div>
